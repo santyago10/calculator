@@ -21,15 +21,24 @@ export class Calculator extends React.Component<{}, IComponent>{
   getValues( e ){
     if( this.operation !== "" ){
       if( this.value2.length < 9 ){
-        if( e._dispatchInstances.memoizedProps.children === "0" && this.value2[0] === "0" ){
-          this.setState( { displayInfo: 0 } );
+        if( e._dispatchInstances.memoizedProps.children === "0" && this.value2[0] === "0"  ){
+          this.value2 = [ "0" ];
+          this.setState( { displayInfo: this.value2 } );
         }
-        else if( this.value2[0] === "-" && !this.value2[1] && e._dispatchInstances.memoizedProps.children === "0" ){
-          this.value2 = [ "-" ];
+        else if( !this.value2.length && e._dispatchInstances.memoizedProps.children === "." ){
+          this.value2 = [ "0", "." ];
+          this.setState( { displayInfo: this.value2 } )
+        }
+        else if( this.value2[0] === "-" && this.value2[1] === "0" && e._dispatchInstances.memoizedProps.children === "0" ){
+          this.value2 = [ "-", "0" ];
           this.setState( { displayInfo: this.value2 } );
         }
         else{
-          this.value2[0] === "0" ? this.value2 = [ e._dispatchInstances.memoizedProps.children ] :
+          debugger;
+          this.value2[0] === "0" && this.value2[1] !== "." ?
+          ( !this.value2[1] && e._dispatchInstances.memoizedProps.children === "." ?
+           this.value2.push( e._dispatchInstances.memoizedProps.children ) :
+           this.value2 = [ e._dispatchInstances.memoizedProps.children ] ) : 
           this.value2.push( e._dispatchInstances.memoizedProps.children );
 
           this.setState( { displayInfo: this.value2 } );
@@ -45,12 +54,14 @@ export class Calculator extends React.Component<{}, IComponent>{
         {
           this.setState( { displayInfo: this.value1 } );
         }
-        else if( this.value1[0] === "-" && !this.value1[1] && e._dispatchInstances.memoizedProps.children === "0" ){
-          this.value1 = [ "-" ];
+        else if( this.value1[0] === "-" && this.value1[1] === "0" && e._dispatchInstances.memoizedProps.children === "0" ){
+          this.value1 = [ "-", "0" ];
           this.setState( { displayInfo: this.value1 } );
         }
         else{
-          this.value1[0] === "0" || !Array.isArray( this.value1 ) ? this.value1 = [ e._dispatchInstances.memoizedProps.children ] :
+          this.value1[0] === "0" && this.value1[1] !== "." || !Array.isArray( this.value1 ) ? ( !this.value1[1] && e._dispatchInstances.memoizedProps.children === "." ?
+           this.value1.push( e._dispatchInstances.memoizedProps.children ) :
+            this.value1 = [ e._dispatchInstances.memoizedProps.children ] ) :
           this.value1.push( e._dispatchInstances.memoizedProps.children );
           this.setState( { displayInfo: this.value1 } );
         }
@@ -87,8 +98,8 @@ export class Calculator extends React.Component<{}, IComponent>{
         this.value2 = [ "0" ];
         this.setState( { displayInfo: this.value2 } )
       }
-      else if( this.value2[0] === "0"){
-        this.value2 = [ "-" ];
+      else if( this.value2[0] === "0" && this.value2[1] !== "." || !this.value2.length ){
+        this.value2 = [ "-" , "0" ];
         this.setState( { displayInfo: this.value2 } );
       }
       else{
@@ -99,11 +110,11 @@ export class Calculator extends React.Component<{}, IComponent>{
       }
     }
     else{
-      if( this.value1[0] === "0" ){
-        this.value1 = [ "-" ];
+      if( this.value1[0] === "0" && this.value1[1] !== "." ){
+        this.value1 = [ "-", "0" ];
         this.setState( { displayInfo: this.value1 } );
       }
-      else if( this.value1[0] === "-" && !this.value1[1]){
+      else if( this.value1[0] === "-" && this.value1[1] === "0" && this.value1[2] !== "." ){
         this.value1 = [ "0" ];
         this.setState( { displayInfo: this.value1 } );
       }
@@ -146,16 +157,16 @@ export class Calculator extends React.Component<{}, IComponent>{
     else if( this.value2.length ){
       switch( this.operation ){
         case '+':
-          Array.isArray( this.value1 ) ? ( this.value1 = ( this.value1.indexOf('.') ? parseFloat( this.value1.join("") ) :
-          parseInt( this.value1.join("") ) ) + ( this.value2.indexOf('.') ? parseFloat( this.value2.join("") ) : 
-          parseInt( this.value2.join("") ) ) ) :
-          ( this.value1 = this.value1 + ( this.value2.indexOf('.') ? parseFloat( this.value2.join("") ) : 
-          parseInt( this.value2.join("") ) ) );
+            Array.isArray( this.value1 ) ? ( this.value1 = ( this.value1.indexOf('.') ? parseFloat( this.value1.join("") ) :
+            parseInt( this.value1.join("") ) ) + ( this.value2.indexOf('.') ? parseFloat( this.value2.join("") ) : 
+            parseInt( this.value2.join("") ) ) ) :
+            ( this.value1 = this.value1 + ( this.value2.indexOf('.') ? parseFloat( this.value2.join("") ) : 
+            parseInt( this.value2.join("") ) ) );
 
-          this.setState( { displayInfo: this.value1 } );
+            this.setState( { displayInfo: this.value1 } );
 
-          this.operation = "";
-          this.value2 = [];
+            this.operation = "";
+            this.value2 = [];
         break;
 
         case '-': 
