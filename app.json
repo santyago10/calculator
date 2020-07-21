@@ -1,0 +1,15 @@
+{
+  "name": "TestTask",
+  "displayName": "TestTask",
+  "expo": {
+    "name": "TestTask",
+    "slug": "TestTask",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "santyago"
+    }
+  }
+}
